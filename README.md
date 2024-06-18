@@ -44,9 +44,9 @@ Application to compress images with the TinyPNG API.
 
 2. Process the job that is in the queue
 
-        ```bash
-        php artisan queue:work
-        ```
+    ```bash
+    php artisan queue:work
+    ```
 
 3. Check the image is in `public/storage/compress`
 
