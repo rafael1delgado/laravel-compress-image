@@ -16,16 +16,16 @@ class CompressImage implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     *
+     * Folder to store compressed images
+     */
+    public const FOLDER_COMPRESS = 'compress';
+
+    /**
+     * Link the image to be compressed
      *
      * @var string
      */
     public string $url;
-
-    /**
-     *
-     */
-    public const FOLDER_COMPRESS = 'compress';
 
     /**
      * Create a new job instance.
