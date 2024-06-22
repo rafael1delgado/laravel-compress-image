@@ -54,13 +54,17 @@
                                     placeholder="https://www.dominio.com/imagen-alta-calidad.png"
                                 />
 
+                                @error('link')
+                                    <div class="mt-2 p-2 text-[10px] rounded-md bg-red-300 text-gray-800">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+
                                 <span class="mt-3 text-[10px] leading-6 text-gray-600">
                                     La imagen se almacenará en
                                     <strong>public/storage/compress.</strong>
                                 </span>
                             </label>
-
-
 
                             <div class="flex justify-center mt-5">
                                 <button
