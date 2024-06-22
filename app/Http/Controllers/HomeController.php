@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CompressImageRequest;
 use App\Jobs\CompressImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -21,10 +22,10 @@ class HomeController extends Controller
     /**
      * Compress the image
      *
-     * @param  Request  $request
+     * @param  CompressImageRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function compressImage(Request $request)
+    public function compressImage(CompressImageRequest $request)
     {
         /**
          * Check if you can get the image with HTTP
