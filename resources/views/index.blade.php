@@ -24,7 +24,7 @@
 
                     @foreach (['red', 'green', 'sky', 'yellow'] as $key)
                         @if(session()->has($key))
-                            <div class="span bg-{{ $key }}-300 p-2 rounded-md text-gray-800">
+                            <div class="bg-{{ $key }}-300 p-2 rounded-md text-gray-800">
                                 {!! session()->get($key) !!}
                             </div>
                         @endif
