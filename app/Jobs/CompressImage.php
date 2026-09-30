@@ -7,9 +7,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Tinify\Exception;
 
 class CompressImage implements ShouldQueue
 {
@@ -22,15 +23,12 @@ class CompressImage implements ShouldQueue
 
     /**
      * Link the image to be compressed
-     *
-     * @var string
      */
     public string $url;
 
     /**
      * Create a new job instance.
      *
-     * @param  string  $url
      * @return void
      */
     public function __construct(string $url)
@@ -43,29 +41,36 @@ class CompressImage implements ShouldQueue
      */
     public function handle(): void
     {
-        /*
-         * Set the TinyPNG key
-         */
         \Tinify\setKey(config('tiny-png.key'));
 
-        /**
-         * Optimize the original image with TinyPNG.
-         */
-        $newFile = \Tinify\fromUrl($this->url);
+        try {
+            /**
+             * Optimize the original image with TinyPNG.
+             */
+            $newFile = \Tinify\fromUrl($this->url);
 
-        /**
-         * Get the compressed image.
-         */
-        $compressedImage = $newFile->toBuffer();
+            /**
+             * Get the compressed image.
+             */
+            $compressedImage = $newFile->toBuffer();
 
-        /**
-         * Set the name of the compressed image
-         */
-        $name = self::FOLDER_COMPRESS."/".Str::random().".".File::extension($this->url);
+            /**
+             * Set the name of the compressed image
+             */
+            $extension = pathinfo(parse_url($this->url, PHP_URL_PATH), PATHINFO_EXTENSION);
+            $name = self::FOLDER_COMPRESS.'/'.Str::random().'.'.$extension;
 
-        /*
-         * Save the compressed image to the public disk.
-         */
-        Storage::disk('public')->put($name, $compressedImage);
+            /*
+             * Save the compressed image to the public disk.
+             */
+            Storage::disk('public')->put($name, $compressedImage);
+        } catch (Exception $e) {
+            Log::error('No se pudo comprimir la imagen', [
+                'url' => $this->url,
+                'error' => $e->getMessage(),
+            ]);
+
+            throw $e;
+        }
     }
 }
