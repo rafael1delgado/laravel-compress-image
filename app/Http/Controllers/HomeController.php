@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CompressImageRequest;
 use App\Jobs\CompressImage;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
@@ -12,7 +14,7 @@ class HomeController extends Controller
     /**
      * Load the view
      *
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     * @return View|Factory
      */
     public function index()
     {
@@ -22,25 +24,21 @@ class HomeController extends Controller
     /**
      * Compress the image
      *
-     * @param  CompressImageRequest  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function compressImage(CompressImageRequest $request)
     {
         /**
          * Check if you can get the image with HTTP
          */
-        if(Http::get($request->link)->successful())
-        {
+        if (Http::get($request->link)->successful()) {
             /**
              * Dispatch the job to compress the image
              */
             CompressImage::dispatch($request->link);
 
             return redirect()->back()->with('green', 'Procesando la imagen...');
-        }
-        else
-        {
+        } else {
             return redirect()->back()->with('red', 'El enlace ingresado no se puede acceder');
         }
     }
