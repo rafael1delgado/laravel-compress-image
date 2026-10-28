@@ -28,7 +28,7 @@ Paste the URL of any `.jpg`, `.jpeg` or `.png` image and the app will optimize i
 | Layer      | Technology              |
 | ---------- | ----------------------- |
 | Backend    | Laravel 13, PHP 8.4     |
-| Compression| tiny/tinify 1.6.4        |
+| Compression| tiny/tinify 1.6.4       |
 | Frontend   | Blade, Tailwind CSS     |
 | Build tool | Vite 5                  |
 | Queue      | Laravel Queue (database)|
